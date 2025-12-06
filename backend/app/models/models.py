@@ -8,7 +8,7 @@ class Role(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     name: str = Field(index=True, unique=True)
     description: Optional[str] = Field(default=None)
-    permissions: Optional[Dict] = Field(default=None, sa_column=Column(JSON))
+    permissions: Optional[Any] = Field(default=None, sa_column=Column(JSON))
     
     users: List["User"] = Relationship(back_populates="role")
 
@@ -119,12 +119,12 @@ class SyncLog(SQLModel, table=True):
     entity_id: Optional[int] = Field(default=None, description="Database ID of the entity")
     operation: str = Field(nullable=False, description="Create, Update, Delete")
     status: str = Field(nullable=False, description="Success or Fail")
-    details: Optional[Dict] = Field(default=None, sa_column=Column(JSON))
+    details: Optional[Any] = Field(default=None, sa_column=Column(JSON))
 
 # --- SyncQueue ---
 class SyncQueue(SQLModel, table=True):
     """Queue of failed integration payloads for retry."""
     id: Optional[int] = Field(default=None, primary_key=True)
-    payload: Dict = Field(nullable=False, sa_column=Column(JSON))
+    payload: Any = Field(nullable=False, sa_column=Column(JSON))
     retry_count: int = Field(default=0)
     next_retry_at: Optional[datetime] = Field(default=None)
