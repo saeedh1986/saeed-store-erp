@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saeed ERP V2 - Dashboard</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="background-glow"></div>
+    <div class="background-glow-2"></div>
+
+    <div class="app-container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="brand">
+                <i class="fa-solid fa-cube fa-sm"></i>
+                <span>Saeed</span> ERP
+            </div>
+            <ul class="nav-links">
+                <li class="nav-item active" onclick="loadContent('dashboard')">
+                    <i class="fa-solid fa-gauge-high"></i> Dashboard
+                </li>
+                <li class="nav-item" onclick="loadContent('products')">
+                    <i class="fa-solid fa-box-open"></i> Products
+                </li>
+                <li class="nav-item" onclick="loadContent('orders')">
+                    <i class="fa-solid fa-cart-shopping"></i> Orders
+                </li>
+                <li class="nav-item" onclick="loadContent('customers')">
+                    <i class="fa-solid fa-users"></i> Customers
+                </li>
+                <li class="nav-item" onclick="window.open('/docs', '_blank')">
+                    <i class="fa-solid fa-book-open"></i> API Docs
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content" id="main-content">
+            <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <div>
+                    <h1 id="page-title">Dashboard</h1>
+                    <p class="stat-label">Welcome back, Saeed. System is running smoothly.</p>
+                </div>
+                <div>
+                    <span class="status online"></span> System Online
+                </div>
+            </header>
+
+            <div class="grid">
+                <div class="card">
+                    <div class="card-icon"><i class="fa-solid fa-boxes-stacked"></i></div>
+                    <div class="stat-value" id="product-count">--</div>
+                    <div class="stat-label">Total Products</div>
+                </div>
+                <div class="card">
+                    <div class="card-icon"><i class="fa-solid fa-cart-flatbed"></i></div>
+                    <div class="stat-value" id="order-count">--</div>
+                    <div class="stat-label">Pending Orders</div>
+                </div>
+                <div class="card">
+                    <div class="card-icon"><i class="fa-solid fa-users-line"></i></div>
+                    <div class="stat-value" id="customer-count">--</div>
+                    <div class="stat-label">Active Customers</div>
+                </div>
+            </div>
+
+            <div style="margin-top: 3rem;">
+                <h3>Quick Actions</h3>
+                <div style="display: flex; gap: 1rem;">
+                    <a href="/docs" target="_blank" class="btn">
+                        <i class="fa-solid fa-terminal"></i> Test API Endpoints
+                    </a>
+                    <button class="btn btn-secondary" onclick="alert('Zoho Sync must be run from the script for now.')">
+                        <i class="fa-solid fa-rotate"></i> Sync Zoho Data
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Simple client-side logic to fetch stats
+        async function fetchStats() {
+            try {
+                // Fetch Products Count
+                // Note: We need endpoints that return counts or lists. Using list length for now.
+                // Since this is a static dashboard, we'll try to hit the endpoints.
+                
+                // This is a placeholder as we don't have direct count endpoints yet
+                // Real implementation would call: /api/v1/inventory/products
+                document.getElementById('product-count').innerText = "Ready to Import"; 
+                document.getElementById('order-count').innerText = "0";
+                document.getElementById('customer-count').innerText = "0";
+
+            } catch (error) {
+                console.error("Error fetching stats:", error);
+            }
+        }
+
+        function loadContent(page) {
+            const title = document.getElementById('page-title');
+            const navItems = document.querySelectorAll('.nav-item');
+            
+            navItems.forEach(item => item.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+
+            if (page === 'dashboard') {
+                title.innerText = 'Dashboard';
+                // Reset view (reload page or simplistic dom manipulation)
+                location.reload(); 
+            } else if (page === 'products') {
+                title.innerText = 'Products Repository';
+                // In a real SPA, we'd fetch and render a table here. 
+                // For MVP, we'll redirect or show a "Coming Soon" with API link
+                alert('UI for Products list is under construction. Please use /docs to view data via API.');
+            } else {
+                 title.innerText = page.charAt(0).toUpperCase() + page.slice(1);
+                 alert('Section under construction.');
+            }
+        }
+
+        window.onload = fetchStats;
+    </script>
+</body>
+</html>

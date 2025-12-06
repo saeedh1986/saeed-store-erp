@@ -1,5 +1,8 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
+from fastapi.responses import HTMLResponse
 from sqlmodel import SQLModel
 from app.core.config import settings
 from app.database import engine
@@ -8,6 +11,7 @@ from app.models import models
 from app.routers import inventory as inventory_router
 from app.routers import customers as customers_router
 from app.routers import orders as orders_router
+import os
 
 # Create Tables
 SQLModel.metadata.create_all(bind=engine)
@@ -27,10 +31,16 @@ if settings.BACKEND_CORS_ORIGINS:
         allow_headers=["*"],
     )
 
+# Mount Static Files
+app.mount("/static", StaticFiles(directory="app/static"), name="static")
+
+# Templates
+templates = Jinja2Templates(directory="app/templates")
+
 app.include_router(inventory_router.router, prefix=settings.API_V1_STR)
 app.include_router(customers_router.router, prefix=settings.API_V1_STR)
 app.include_router(orders_router.router, prefix=settings.API_V1_STR)
 
-@app.get("/")
-def root():
-    return {"message": "Welcome to Saeed Store ERP V2 API"}
+@app.get("/", response_class=HTMLResponse)
+async def root(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
