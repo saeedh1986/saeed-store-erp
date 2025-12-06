@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Optional, List, Dict, Any
+from typing import Optional, List, Any
 from sqlalchemy import JSON, Column
 from sqlmodel import Field, SQLModel, Relationship
 
@@ -8,7 +8,7 @@ class Role(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     name: str = Field(index=True, unique=True)
     description: Optional[str] = Field(default=None)
-    permissions: Optional[Any] = Field(default=None, sa_column=Column(JSON))
+    permissions: Optional[Any] = Field(default=None, sa_column=Column(JSON, nullable=True))
     
     users: List["User"] = Relationship(back_populates="role")
 
@@ -119,12 +119,12 @@ class SyncLog(SQLModel, table=True):
     entity_id: Optional[int] = Field(default=None, description="Database ID of the entity")
     operation: str = Field(nullable=False, description="Create, Update, Delete")
     status: str = Field(nullable=False, description="Success or Fail")
-    details: Optional[Any] = Field(default=None, sa_column=Column(JSON))
+    details: Optional[Any] = Field(default=None, sa_column=Column(JSON, nullable=True))
 
 # --- SyncQueue ---
 class SyncQueue(SQLModel, table=True):
     """Queue of failed integration payloads for retry."""
     id: Optional[int] = Field(default=None, primary_key=True)
-    payload: Any = Field(nullable=False, sa_column=Column(JSON))
+    payload: Any = Field(sa_column=Column(JSON, nullable=False))
     retry_count: int = Field(default=0)
     next_retry_at: Optional[datetime] = Field(default=None)
