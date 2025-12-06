@@ -1,14 +1,16 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from sqlmodel import SQLModel
 from app.core.config import settings
 from app.database import engine
-from app.models.base import Base
-# Import models to register them with Base
-from app.models import user, inventory
+# Import ALL models to ensure they are registered with SQLModel.metadata
+from app.models import models
 from app.routers import inventory as inventory_router
+from app.routers import customers as customers_router
+from app.routers import orders as orders_router
 
 # Create Tables
-Base.metadata.create_all(bind=engine)
+SQLModel.metadata.create_all(bind=engine)
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -26,6 +28,8 @@ if settings.BACKEND_CORS_ORIGINS:
     )
 
 app.include_router(inventory_router.router, prefix=settings.API_V1_STR)
+app.include_router(customers_router.router, prefix=settings.API_V1_STR)
+app.include_router(orders_router.router, prefix=settings.API_V1_STR)
 
 @app.get("/")
 def root():

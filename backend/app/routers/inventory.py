@@ -4,7 +4,8 @@ from sqlalchemy import func
 from typing import List
 
 from app.database import get_db
-from app.models.inventory import Product, Category, StockMove
+# Update import to use the consolidated 'models' module
+from app.models.models import Product, Category, StockMove
 from app.schemas.inventory import ProductCreate, ProductRead, StockMoveCreate, StockMoveRead, CategoryCreate, CategoryRead
 
 router = APIRouter(
@@ -28,7 +29,12 @@ def get_categories(db: Session = Depends(get_db)):
 # --- Products ---
 @router.post("/products", response_model=ProductRead)
 def create_product(product: ProductCreate, db: Session = Depends(get_db)):
-    db_product = Product(**product.dict())
+    product_data = product.dict()
+    # Handle conversion: Price (float) -> Price Cents (int)
+    price = product_data.pop("price", 0.0)
+    price_cents = int(round(price * 100))
+    
+    db_product = Product(**product_data, price_cents=price_cents)
     db.add(db_product)
     db.commit()
     db.refresh(db_product)

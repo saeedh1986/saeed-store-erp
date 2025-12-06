@@ -19,8 +19,8 @@ class Settings(BaseSettings):
 
     # Database
     POSTGRES_SERVER: str = "db"
-    POSTGRES_USER: str = "postgres"
-    POSTGRES_PASSWORD: str = "password"
+    POSTGRES_USER: str = "saeed_user"
+    POSTGRES_PASSWORD: str = "saeed_pass"
     POSTGRES_DB: str = "saeed_erp_v2"
     DATABASE_URL: str | None = None
 
