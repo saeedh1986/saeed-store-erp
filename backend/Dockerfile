@@ -17,5 +17,8 @@ COPY . .
 ENV PYTHONUNBUFFERED=1
 ENV DJANGO_SETTINGS_MODULE=config.settings
 
+# Fix permissions
+RUN chmod +x run.sh
+
 # Run script
 CMD ["sh", "run.sh"]
