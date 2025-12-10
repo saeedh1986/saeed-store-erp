@@ -8,7 +8,7 @@ import httpx
 from pathlib import Path
 
 # Configuration
-ERP_API_URL = "http://erp.s3eed.ae/api/v1"  # Change to localhost:8000 for local testing
+ERP_API_URL = "https://erp.s3eed.ae/api/v1"  # Change to localhost:8000 for local testing
 ZOHO_FOLDER = Path("/Volumes/SaeedCloud/Saeed'sCloud/workspaceAG/zoho book ")
 
 def parse_price(price_str: str) -> int:
@@ -59,7 +59,7 @@ def import_products():
         for p in products:
             try:
                 # Create Product
-                resp = client.post(f"{ERP_API_URL}/inventory/products", json={
+                resp = client.post(f"{ERP_API_URL}/inventory/products/", json={
                     "sku": p['sku'],
                     "name": p['name'],
                     "description": p['description'],
@@ -79,7 +79,7 @@ def import_products():
                         product_id = product_data.get('id')
                         
                         if product_id:
-                            client.post(f"{ERP_API_URL}/inventory/moves", json={
+                            client.post(f"{ERP_API_URL}/inventory/moves/", json={
                                 "product_id": product_id,
                                 "quantity": p['opening_stock'],
                                 "type": "adjustment",
@@ -123,7 +123,7 @@ def import_contacts():
     with httpx.Client(timeout=30) as client:
         for c in customers:
             try:
-                resp = client.post(f"{ERP_API_URL}/customers", json=c)
+                resp = client.post(f"{ERP_API_URL}/customers/", json=c)
                 if resp.status_code in [200, 201]:
                     print(f"  ✅ {c['full_name']}")
                 else:

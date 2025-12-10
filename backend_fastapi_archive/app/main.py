@@ -8,6 +8,7 @@ from app.core.config import settings
 from app.database import engine
 # Import ALL models to ensure they are registered with SQLModel.metadata
 from app.models import models
+from app.routers import login as login_router
 from app.routers import inventory as inventory_router
 from app.routers import customers as customers_router
 from app.routers import orders as orders_router
@@ -37,6 +38,7 @@ app.mount("/static", StaticFiles(directory="app/static"), name="static")
 # Templates
 templates = Jinja2Templates(directory="app/templates")
 
+app.include_router(login_router.router, prefix=f"{settings.API_V1_STR}/login", tags=["login"])
 app.include_router(inventory_router.router, prefix=settings.API_V1_STR)
 app.include_router(customers_router.router, prefix=settings.API_V1_STR)
 app.include_router(orders_router.router, prefix=settings.API_V1_STR)

@@ -1,17 +1,17 @@
 #!/bin/bash
-
-# Exit on error
 set -e
 
-# Navigate to backend directory if not already there
-if [ -d "backend" ]; then
-    cd backend
-fi
+echo "🚀 Starting Django Backend..."
 
-# Run migrations (Optional: if we add Alembic later, this is where it goes)
-# echo "Running migrations..."
-# alembic upgrade head
+# Wait for DB (simple sleep, or we could use wait-for-it)
+# echo "Waiting for database..."
+# sleep 5
 
-# Start the application
-echo "Starting Uvicorn Server..."
-exec uvicorn app.main:app --host 0.0.0.0 --port 8000
+echo "📂 Collecting static files..."
+python manage.py collectstatic --noinput
+
+echo "📦 Applying migrations..."
+python manage.py migrate
+
+echo "🔥 Starting Gunicorn..."
+exec gunicorn config.wsgi:application --bind 0.0.0.0:8000 --workers 3
