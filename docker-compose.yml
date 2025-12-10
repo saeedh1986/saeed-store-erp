@@ -13,7 +13,7 @@ services:
     ports:
       - "5432:5432"
     healthcheck:
-      test: ["CMD", "pg_isready", "-U", "saeed_user"]
+      test: [ "CMD", "pg_isready", "-U", "saeed_user" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -31,17 +31,6 @@ services:
     ports:
       - "8000:8000"
     restart: unless-stopped
-
-#   frontend:
-#     build:
-#       context: ./frontend
-#       dockerfile: Dockerfile
-#     container_name: saeed_erp_frontend
-#     ports:
-#       - "80:80"
-#     depends_on:
-#       - backend
-#     restart: unless-stopped
 
 volumes:
   pgdata:
