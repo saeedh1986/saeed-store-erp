@@ -32,16 +32,16 @@ services:
       - "8000:8000"
     restart: unless-stopped
 
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    container_name: saeed_erp_frontend
-    ports:
-      - "80:80"
-    depends_on:
-      - backend
-    restart: unless-stopped
+#   frontend:
+#     build:
+#       context: ./frontend
+#       dockerfile: Dockerfile
+#     container_name: saeed_erp_frontend
+#     ports:
+#       - "80:80"
+#     depends_on:
+#       - backend
+#     restart: unless-stopped
 
 volumes:
   pgdata:
