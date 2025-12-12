@@ -7,6 +7,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY', 'insecure-dev-key-change-in-prod')
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 ALLOWED_HOSTS = ['*']
+CSRF_TRUSTED_ORIGINS = ['https://*.s3eed.ae', 'https://erp.s3eed.ae', 'http://localhost']
 
 INSTALLED_APPS = [
     # Jazzmin (Must be before admin)
