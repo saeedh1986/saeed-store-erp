@@ -60,11 +60,12 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 # Database
 # Use dj-database-url to parse DATABASE_URL (Coolify provides this)
-# Fallback to local postgres
+# Database - Switched to SQLite for immediate stability
 DATABASES = {
-    'default': dj_database_url.config(
-        default=f"postgres://{os.environ.get('POSTGRES_USER', 'saeed_user')}:{os.environ.get('POSTGRES_PASSWORD', 'saeed_pass')}@{os.environ.get('POSTGRES_SERVER', 'db')}:5432/{os.environ.get('POSTGRES_DB', 'saeed_erp_v2')}"
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'data' / 'db.sqlite3',
+    }
 }
 
 AUTH_PASSWORD_VALIDATORS = [

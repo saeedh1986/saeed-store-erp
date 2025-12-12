@@ -1,23 +1,6 @@
 version: '3.8'
 
 services:
-  db:
-    image: postgres:15-alpine
-    container_name: saeed_erp_db
-    environment:
-      POSTGRES_USER: saeed_user
-      POSTGRES_PASSWORD: saeed_pass
-      POSTGRES_DB: saeed_erp_v2
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
-    healthcheck:
-      test: [ "CMD", "pg_isready", "-U", "saeed_user" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
   backend:
     build:
       context: ./backend
@@ -25,11 +8,11 @@ services:
     container_name: saeed_erp_backend
     env_file:
       - .env
-    depends_on:
-      - db
+    volumes:
+      - sqlite_data:/app/data
     expose:
       - "8000"
     restart: unless-stopped
 
 volumes:
-  pgdata:
+  sqlite_data:

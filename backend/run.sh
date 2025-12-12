@@ -3,9 +3,9 @@ set -e
 
 echo "🚀 Starting Django Backend..."
 
-# Wait for DB (simple sleep, or we could use wait-for-it)
-# echo "Waiting for database..."
-# sleep 5
+# Ensure data directory exists for SQLite
+echo "📂 Ensuring data directory exists..."
+mkdir -p /app/data
 
 echo "📂 Collecting static files..."
 python manage.py collectstatic --noinput
