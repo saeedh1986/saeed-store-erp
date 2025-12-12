@@ -10,6 +10,9 @@ mkdir -p /app/data
 echo "📂 Collecting static files..."
 python manage.py collectstatic --noinput
 
+echo "📦 Creating migrations..."
+python manage.py makemigrations core inventory orders contacts --noinput
+
 echo "📦 Applying migrations..."
 python manage.py migrate
 
